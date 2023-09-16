@@ -7,17 +7,17 @@ namespace UndergroundMines
 
     public enum EnumSchematicsType
     {
-        undergroundCircle,
-        undergroundCross,
-        undergroundEnd,
-        undergroundMine
+        UndergroundCircle,
+        UndergroundCross,
+        UndergroundEnd,
+        UndergroundMine
     }
 
     public enum EnumRotation: int
     {
-        north = 0,
-        east = 90,
-        south = 180,
-        west = 270
+        North = 0,
+        East = 90,
+        South = 180,
+        West = 270
     }
 }
