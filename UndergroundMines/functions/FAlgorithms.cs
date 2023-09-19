@@ -11,10 +11,8 @@ namespace UndergroundMines
         /// <param name="structure">Structure to look for exits.</param>
         /// <param name="side">Side of the exit.</param>
         /// <returns>true if has exit or false if not.</returns>
-        public static bool HasExitInSide(ICoreServerAPI api, Structure structure, ERotation side)
+        public static bool HasExitInSide(Structure structure, ERotation side)
         {
-            api.Server.LogDebug($"ST {structure.Type} | SR {structure.Rotation} | SIDE {side}");
-
             if (structure.Type == ESchematicType.UndergroundCross) { // exit all sides always true
                 return true;
             }
@@ -73,55 +71,55 @@ namespace UndergroundMines
         /// <param name="data">SavedData to look for the created structure and orientation.</param>
         /// <param name="distance">Number of chunks away of the original chunk. 1 is the inmediatly next chunk.</param>
         /// <returns>List with the sides with exit.</returns>
-        public static List<ERotation> CheckExitSides(ICoreServerAPI api, int chunkX, int chunkZ, int chunkSize, int seaLevel, SavedData data, int distance)
+        public static List<ERotation> CheckExitSides(int chunkX, int chunkZ, int chunkSize, int seaLevel, SavedData data, int distance)
         {
             List<ERotation> exits = new ();
             Chunk newChunk;
 
             // north chunk
-            newChunk = FChunk.GetChunk(chunkX, chunkZ + distance, chunkSize, seaLevel);
+            newChunk = FChunk.GetChunk(chunkX, chunkZ - distance, chunkSize, seaLevel);
             if (!data.GeneratedStructures.ContainsKey(newChunk)) {
                 exits.Add(ERotation.North);
             }
             else {
                 var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(api, structure, ERotation.South)) {
+                if (structure != null && HasExitInSide(structure, ERotation.South)) {
                     exits.Add(ERotation.North);
                 }
             }
 
             // east chunk
-            newChunk = FChunk.GetChunk(chunkX - distance, chunkZ, chunkSize, seaLevel);
+            newChunk = FChunk.GetChunk(chunkX + distance, chunkZ, chunkSize, seaLevel);
             if (!data.GeneratedStructures.ContainsKey(newChunk)) {
                 exits.Add(ERotation.East);
             }
             else {
                 var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(api, structure, ERotation.East)) {
+                if (structure != null && HasExitInSide(structure, ERotation.West)) {
                     exits.Add(ERotation.East);
                 }
             }
 
             // south chunk
-            newChunk = FChunk.GetChunk(chunkX, chunkZ - distance, chunkSize, seaLevel);
+            newChunk = FChunk.GetChunk(chunkX, chunkZ + distance, chunkSize, seaLevel);
             if (!data.GeneratedStructures.ContainsKey(newChunk)) {
                 exits.Add(ERotation.South);
             }
             else {
                 var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(api, structure, ERotation.South)) {
+                if (structure != null && HasExitInSide(structure, ERotation.North)) {
                     exits.Add(ERotation.South);
                 }
             }
 
             // west chunk
-            newChunk = FChunk.GetChunk(chunkX + distance, chunkZ, chunkSize, seaLevel);
+            newChunk = FChunk.GetChunk(chunkX - distance, chunkZ, chunkSize, seaLevel);
             if (!data.GeneratedStructures.ContainsKey(newChunk)) {
                 exits.Add(ERotation.West);
             }
             else {
                 var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(api, structure, ERotation.West)) {
+                if (structure != null && HasExitInSide(structure, ERotation.East)) {
                     exits.Add(ERotation.West);
                 }
             }
@@ -143,30 +141,6 @@ namespace UndergroundMines
             {
                 // north chunk
                 if (side == ERotation.North) { 
-                    Chunk newChunk = FChunk.GetChunk(chunkX, chunkZ + 1, chunkSize, seaLevel);
-                    if (data.GeneratedStructures.ContainsKey(newChunk))
-                    {
-                        Structure structure = data.GeneratedStructures[newChunk];
-                        if (structure != null) {
-                            structures.Add(ERotation.South);
-                        }
-                    }
-                }
-
-                // east chunk
-                if (side == ERotation.East) {
-                    Chunk newChunk = FChunk.GetChunk(chunkX - 1, chunkZ, chunkSize, seaLevel);
-                    if (data.GeneratedStructures.ContainsKey(newChunk))
-                    {
-                        Structure structure = data.GeneratedStructures[newChunk];
-                        if (structure != null) {
-                            structures.Add(ERotation.West);
-                        }
-                    }
-                }
-
-                // south chunk
-                if (side == ERotation.South) {
                     Chunk newChunk = FChunk.GetChunk(chunkX, chunkZ - 1, chunkSize, seaLevel);
                     if (data.GeneratedStructures.ContainsKey(newChunk))
                     {
@@ -177,14 +151,38 @@ namespace UndergroundMines
                     }
                 }
 
-                // west chunk
-                if (side == ERotation.West) {
+                // east chunk
+                if (side == ERotation.East) {
                     Chunk newChunk = FChunk.GetChunk(chunkX + 1, chunkZ, chunkSize, seaLevel);
                     if (data.GeneratedStructures.ContainsKey(newChunk))
                     {
                         Structure structure = data.GeneratedStructures[newChunk];
                         if (structure != null) {
                             structures.Add(ERotation.East);
+                        }
+                    }
+                }
+
+                // south chunk
+                if (side == ERotation.South) {
+                    Chunk newChunk = FChunk.GetChunk(chunkX, chunkZ + 1, chunkSize, seaLevel);
+                    if (data.GeneratedStructures.ContainsKey(newChunk))
+                    {
+                        Structure structure = data.GeneratedStructures[newChunk];
+                        if (structure != null) {
+                            structures.Add(ERotation.South);
+                        }
+                    }
+                }
+
+                // west chunk
+                if (side == ERotation.West) {
+                    Chunk newChunk = FChunk.GetChunk(chunkX - 1, chunkZ, chunkSize, seaLevel);
+                    if (data.GeneratedStructures.ContainsKey(newChunk))
+                    {
+                        Structure structure = data.GeneratedStructures[newChunk];
+                        if (structure != null) {
+                            structures.Add(ERotation.West);
                         }
                     }
                 }
@@ -303,9 +301,9 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.8 => ESchematicType.UndergroundMine, // 80%
-                <= 1.0 => ESchematicType.UndergroundAngle, // 50%
-                <= 1.1 => ESchematicType.UndergroundCross, // 00%
+                <= 0.2 => ESchematicType.UndergroundMine, // 20%
+                <= 0.4 => ESchematicType.UndergroundAngle, // 20%
+                <= 1.0 => ESchematicType.UndergroundCross, // 60%
                 _ => ESchematicType.UndergroundCross // Default Cross, in case of error I have 4 exits XD
             };
         }
@@ -316,7 +314,7 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.4 => ESchematicType.UndergroundMine, // 80%
+                <= 0.8 => ESchematicType.UndergroundMine, // 80%
                 <= 1 => ESchematicType.UndergroundAngle, // 20%
                 _ => ESchematicType.UndergroundMine
             };
@@ -328,7 +326,7 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.8 => ESchematicType.UndergroundMine, // 80%
+                <= 0.7 => ESchematicType.UndergroundMine, // 70%
                 <= 1 => ESchematicType.UndergroundCross, // 20%
                 _ => ESchematicType.UndergroundMine
             };
@@ -340,8 +338,8 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.8 => ESchematicType.UndergroundAngle, // 80%
-                <= 1 => ESchematicType.UndergroundCross, // 20%
+                <= 0.6 => ESchematicType.UndergroundAngle, // 60%
+                <= 1 => ESchematicType.UndergroundCross, // 40%
                 _ => ESchematicType.UndergroundMine
             };
         }

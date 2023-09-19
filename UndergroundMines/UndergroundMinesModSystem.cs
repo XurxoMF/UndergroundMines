@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Vintagestory.API.Common;
@@ -59,7 +60,7 @@ namespace UndergroundMines
             bool generated = false;
 
             // Sides with exit or with no generated chunks NO SIDES WITHOUT STRUCTURES IN GENERATED CHUNKS
-            var exits = FAlgorithms.CheckExitSides(_api, request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, _savedData, 1);
+            var exits = FAlgorithms.CheckExitSides(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, _savedData, 1);
             // Sides with exit and structure, NO SIDES WITHOUT STRUCTURE and NO SIDES WITHOUT CHUNK GENERATED.
             List<ERotation> structuredExits = new ();
             // ONLY NOT GENERATED CHUNK SIDES
@@ -94,9 +95,6 @@ namespace UndergroundMines
                             }
                             else { // exits are in angle
                                 structure = FAlgorithms.GetStructureWithAdjustedRotation(ESchematicType.UndergroundAngle, exits);
-                                string str = "";
-                                foreach (var item in exits) {str += $"{item} ";}
-                                _api.Server.LogDebug(str);
                                 generated = true;
                             }
                         }
@@ -107,9 +105,6 @@ namespace UndergroundMines
                                 if (randomType == ESchematicType.UndergroundAngle) {
                                     var sides = FAlgorithms.GetRandomAngleSideFromList(structuredExits[0], exits);
                                     structure = FAlgorithms.GetStructureWithAdjustedRotation(randomType, sides);
-                                    string str = "";
-                                    foreach (var item in sides) {str += $"{item} ";}
-                                    _api.Server.LogDebug(str);
                                     generated = true;
                                 }
                                 else { // randomType == ESchematicType.UndergroundMine
@@ -120,9 +115,6 @@ namespace UndergroundMines
                             else { // Only an angle can be placed
                                 var sides = FAlgorithms.GetRandomAngleSideFromList(structuredExits[0], exits);
                                 structure = FAlgorithms.GetStructureWithAdjustedRotation(ESchematicType.UndergroundAngle, sides);
-                                string str = "";
-                                foreach (var item in sides) {str += $"{item} ";}
-                                _api.Server.LogDebug(str);
                                 generated = true;
                             }
                         }
@@ -140,9 +132,6 @@ namespace UndergroundMines
                             else { // randomType == ESchematicType.UndergroundAngle
                                 var sides = FAlgorithms.GetRandomAngleSideFromList(structuredExits[0], exits);
                                 structure = FAlgorithms.GetStructureWithAdjustedRotation(randomType, sides);
-                                string str = "";
-                                foreach (var item in sides) {str += $"{item} ";}
-                                _api.Server.LogDebug(str);
                                 generated = true;
                             }
                         }
@@ -171,9 +160,6 @@ namespace UndergroundMines
                                 }
                                 else { // randomType == ESchematicType.UndergroundAngle
                                     structure = FAlgorithms.GetStructureWithAdjustedRotation(randomType, structuredExits);
-                                    string str = "";
-                                    foreach (var item in structuredExits) {str += $"{item} ";}
-                                    _api.Server.LogDebug(str);
                                     generated = true;
                                 }
                             }
@@ -186,9 +172,6 @@ namespace UndergroundMines
                             }
                             else { // If sides are in angle.
                                 structure = FAlgorithms.GetStructureWithAdjustedRotation(ESchematicType.UndergroundAngle, structuredExits);
-                                string str = "";
-                                foreach (var item in structuredExits) {str += $"{item} ";}
-                                _api.Server.LogDebug(str);
                                 generated = true;
                             }
                         }
@@ -199,9 +182,6 @@ namespace UndergroundMines
                             }
                             else { // If sides are in angle.
                                 structure = FAlgorithms.GetStructureWithAdjustedRotation(ESchematicType.UndergroundAngle, structuredExits);
-                                string str = "";
-                                foreach (var item in structuredExits) {str += $"{item} ";}
-                                _api.Server.LogDebug(str);
                                 generated = true;
                             }
                         }
@@ -234,7 +214,12 @@ namespace UndergroundMines
                     // Places the above schematic
                     FSchematics.Place(_blockAccessor, _world, chunk, schematic, structure.Rotation);
 
-                    string existsList = "";
+                    // Log where the new structure has been placed.
+                    // ! Remove in production!
+                    // FTesting.LogNewStructure(_api, chunk, _wd, _chunkSize);
+                }
+
+                string existsList = "";
                     string structuredExitsList = "";
                     string notGeneratedChunkExitsList = "";
 
@@ -253,16 +238,15 @@ namespace UndergroundMines
                         notGeneratedChunkExitsList += $"{item}, ";
                     }
 
-                    _api.Server.LogDebug($"\n> X {FTesting.CoordinateByChunk(chunk.BlockX, _wd.X, _chunkSize)} - Z {FTesting.CoordinateByChunk(chunk.BlockZ, _wd.Z, _chunkSize)}\n> {exits.Count} exits | {existsList} \n> {structuredExits.Count} structured exits | {structuredExitsList} \n> {notGeneratedChunkExits.Count} not generated | {notGeneratedChunkExitsList}\n> {structure.Type} type - {structure.Rotation} rotation");
-
-                    // Log where the new structure has been placed.
-                    // ! Remove in production!
-                    // FTesting.LogNewStructure(_api, chunk, _wd, _chunkSize);
-                }
+                    _api.Server.LogDebug($"\n> X {FTesting.CoordinateByChunk(chunk.BlockX, _wd.X, _chunkSize)} - Z {FTesting.CoordinateByChunk(chunk.BlockZ, _wd.Z, _chunkSize)}\n> {exits.Count} exits | {existsList} \n> {structuredExits.Count} structured exits | {structuredExitsList} \n> {notGeneratedChunkExits.Count} not generated | {notGeneratedChunkExitsList}\n> {(structure == null ? "null" : structure.Type)} type - {(structure == null ? "null" : structure.Rotation)} rotation");
 
                 // Save the structure and chunk where it's placed
-                _savedData.GeneratedStructures.Add(chunk, structure);
-                _savedData.Modified = true;
+                try {
+                    _savedData.GeneratedStructures.Add(chunk, structure);
+                    _savedData.Modified = true;
+                } catch (Exception err) {
+                    _api.Server.LogError($"{err}");
+                }
             }
         }
 
