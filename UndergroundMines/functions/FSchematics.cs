@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -7,25 +8,25 @@ namespace UndergroundMines
 {
     public class FSchematics
     {
-        public static Dictionary<EnumSchematicsType, List<BlockSchematic>> LoadSchematics(ICoreServerAPI api)
+        public static Dictionary<ESchematicType, List<BlockSchematic>> LoadSchematics(ICoreServerAPI api)
         {
-            Dictionary<EnumSchematicsType, List<BlockSchematic>> schematics = new ();
-
-            // underground/circle/
-            var undergroundCircle = LoadSchematicsWithRotationsByPath(api, "underground/circle/");
-            if (undergroundCircle != null) schematics.Add(EnumSchematicsType.UndergroundCircle, undergroundCircle);
+            Dictionary<ESchematicType, List<BlockSchematic>> schematics = new ();
 
             // underground/cross/
             var undergroundCross = LoadSchematicsWithRotationsByPath(api, "underground/cross/");
-            if (undergroundCross != null) schematics.Add(EnumSchematicsType.UndergroundCross, undergroundCross);
+            if (undergroundCross != null) schematics.Add(ESchematicType.UndergroundCross, undergroundCross);
 
             // underground/end/
             var undergroundEnd = LoadSchematicsWithRotationsByPath(api, "underground/end/");
-            if (undergroundEnd != null) schematics.Add(EnumSchematicsType.UndergroundEnd, undergroundEnd);
+            if (undergroundEnd != null) schematics.Add(ESchematicType.UndergroundEnd, undergroundEnd);
 
             // underground/mine/
             var undergroundMine = LoadSchematicsWithRotationsByPath(api, "underground/mine/");
-            if (undergroundMine != null) schematics.Add(EnumSchematicsType.UndergroundMine, undergroundMine);
+            if (undergroundMine != null) schematics.Add(ESchematicType.UndergroundMine, undergroundMine);
+
+            // underground/angle/
+            var undergroundAngle = LoadSchematicsWithRotationsByPath(api, "underground/angle/");
+            if (undergroundAngle != null) schematics.Add(ESchematicType.UndergroundAngle, undergroundAngle);
 
             return schematics;
         }
@@ -56,15 +57,20 @@ namespace UndergroundMines
             return schematics.Count > 0 ? schematics : null;
         }
 
-        public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, EnumRotation rotation)
+        public static BlockSchematic GetRandomSchematicByType(Structure structure, Dictionary<ESchematicType, List<BlockSchematic>> schematics)
         {
-            schematic.ClonePacked();
-            schematic.TransformWhilePacked(world, EnumOrigin.BottomCenter, (int)rotation);
-            schematic.Init(blockAccessor);
+            return schematics[structure.Type][new Random().Next(schematics[structure.Type].Count - 1)];
+        }
+        
+        public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation)
+        {
+            var newSchematic = schematic.ClonePacked();
+            newSchematic.TransformWhilePacked(world, EnumOrigin.BottomCenter, (int)rotation);
+            newSchematic.Init(blockAccessor);
             BlockPos pos = new (
                 chunk.BlockX, chunk.BlockY, chunk.BlockZ
             );
-            schematic.Place(blockAccessor, world, schematic.GetStartPos(pos, EnumOrigin.BottomCenter));
+            newSchematic.Place(blockAccessor, world, newSchematic.GetStartPos(pos, EnumOrigin.BottomCenter));
         }
     }
 }

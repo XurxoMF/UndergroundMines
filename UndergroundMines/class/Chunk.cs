@@ -36,7 +36,7 @@ namespace UndergroundMines
         public Chunk(int blockX, int blockY, int blockZ)
         {
             X = blockX / 32;
-            Z = blockY / 32;
+            Z = blockZ / 32;
             BlockX = blockX;
             BlockY = blockY;
             BlockZ = blockZ;
@@ -44,6 +44,20 @@ namespace UndergroundMines
 
         public Chunk()
         {
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Chunk other = (Chunk)obj;
+            return X == other.X && Z == other.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            return (X * 397) ^ Z;
         }
     }
 }

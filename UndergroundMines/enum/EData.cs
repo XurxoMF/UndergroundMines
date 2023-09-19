@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace UndergroundMines
 {
     public class ModInfo
@@ -5,15 +7,16 @@ namespace UndergroundMines
         public const string MOD_NAME = "UndergroundMines";
     }
 
-    public enum EnumSchematicsType
+    public enum ESchematicType
     {
-        UndergroundCircle,
-        UndergroundCross,
-        UndergroundEnd,
-        UndergroundMine
+        Null, // No structure, used to not generate anything
+        UndergroundCross, // default exit all sides
+        UndergroundEnd, // default exit only north
+        UndergroundMine, // default exit north-south
+        UndergroundAngle // default exit north-east
     }
 
-    public enum EnumRotation: int
+    public enum ERotation: int
     {
         North = 0,
         East = 90,

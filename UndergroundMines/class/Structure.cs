@@ -3,18 +3,18 @@ using ProtoBuf;
 namespace UndergroundMines
 {
     [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
-    public class Mine
+    public class Structure
     {
-        public EnumSchematicsType Type;
-        public EnumRotation Rotation;
+        public ESchematicType Type;
+        public ERotation Rotation;
 
-        public Mine(EnumSchematicsType type, EnumRotation rotation)
+        public Structure(ESchematicType type, ERotation rotation)
         {
             Type = type;
             Rotation = rotation;
         }
 
-        public Mine()
+        public Structure()
         {
         }
     }
