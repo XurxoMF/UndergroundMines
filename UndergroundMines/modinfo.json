@@ -4,8 +4,8 @@
     "name": "Underground Mines",
     "authors": ["XurxoMF"],
     "description": "Adds underground mines and mineshafts.",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "dependencies": {
-        "game": "1.18.0"
+        "game": "1.18.12"
     }
 }

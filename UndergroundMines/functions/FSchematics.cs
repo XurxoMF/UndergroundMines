@@ -10,7 +10,7 @@ namespace UndergroundMines
     {
         public static Dictionary<ESchematicType, List<BlockSchematic>> LoadSchematics(ICoreServerAPI api)
         {
-            Dictionary<ESchematicType, List<BlockSchematic>> schematics = new ();
+            Dictionary<ESchematicType, List<BlockSchematic>> schematics = new();
 
             // underground/cross/
             var undergroundCross = LoadSchematicsWithRotationsByPath(api, "underground/cross/");
@@ -35,7 +35,7 @@ namespace UndergroundMines
         /// Example: <c>overground/entrance/</c></param>
         private static List<BlockSchematic> LoadSchematicsWithRotationsByPath(ICoreServerAPI api, string path)
         {
-            List<BlockSchematic> schematics = new ();
+            List<BlockSchematic> schematics = new();
 
             List<IAsset> assets = api.Assets.GetManyInCategory("worldgen", $"schematics/{path}", "undergroundmines");
 
@@ -49,7 +49,9 @@ namespace UndergroundMines
                 {
                     schematics.Add(schematic);
                     api.Server.LogEvent($"[{ModInfo.MOD_NAME}] Loaded structure {fileName}");
-                } else {
+                }
+                else
+                {
                     api.Server.LogError($"[{ModInfo.MOD_NAME}] Could not load the structure {fileName}");
                 }
             }
@@ -59,15 +61,15 @@ namespace UndergroundMines
 
         public static BlockSchematic GetRandomSchematicByType(Structure structure, Dictionary<ESchematicType, List<BlockSchematic>> schematics)
         {
-            return schematics[structure.Type][new Random().Next(schematics[structure.Type].Count - 1)];
+            return schematics[structure.Type][new Random().Next(schematics[structure.Type].Count)];
         }
-        
+
         public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation)
         {
             var newSchematic = schematic.ClonePacked();
             newSchematic.TransformWhilePacked(world, EnumOrigin.BottomCenter, (int)rotation);
             newSchematic.Init(blockAccessor);
-            BlockPos pos = new (
+            BlockPos pos = new(
                 chunk.BlockX, chunk.BlockY, chunk.BlockZ
             );
             newSchematic.Place(blockAccessor, world, newSchematic.GetStartPos(pos, EnumOrigin.BottomCenter));
