@@ -1,5 +1,6 @@
 {
     "type": "code",
+    "side": "server",
     "modid": "undergroundmines",
     "name": "Underground Mines",
     "authors": ["XurxoMF"],

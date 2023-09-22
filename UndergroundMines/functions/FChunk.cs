@@ -13,11 +13,11 @@ namespace UndergroundMines
             return new(chunkX * chunkSize + (chunkSize / 2), (int)Math.Round(seaLevel * 0.48), chunkZ * chunkSize + (chunkSize / 2), chunkSize);
         }
 
-        public static string GetRockType(int chunkSize, IServerChunk chunkData, IWorldAccessor world)
+        public static string GetRockType(int chunkSize, IServerChunk chunkData, IWorldAccessor world, int start)
         {
             string rockType = "";
 
-            for (int y = 0; y < chunkSize && rockType == ""; y++)
+            for (int y = start; y >= 0 && rockType == ""; y--)
             {
                 var path = chunkData.GetLocalBlockAtBlockPos(world, new BlockPos(chunkSize / 2, y, chunkSize / 2)).Code.Path;
 
