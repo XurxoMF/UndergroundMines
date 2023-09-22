@@ -64,9 +64,19 @@ namespace UndergroundMines
             return schematics[structure.Type][new Random().Next(schematics[structure.Type].Count)];
         }
 
-        public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation)
+        public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation, string rockType)
         {
             var newSchematic = schematic.ClonePacked();
+
+            // var keys = newSchematic.BlockCodes.Keys;
+            // Dictionary<int, AssetLocation> BlockCodes = new();
+            // foreach (var item in keys)
+            // {
+            //     AssetLocation newBlock = new(schematic.BlockCodes[item].Path.Replace("{rock}", rockType));
+            //     BlockCodes.Add(item, newBlock);
+            // }
+            // schematic.BlockCodes = BlockCodes;
+
             newSchematic.TransformWhilePacked(world, EnumOrigin.BottomCenter, (int)rotation);
             newSchematic.Init(blockAccessor);
             BlockPos pos = new(

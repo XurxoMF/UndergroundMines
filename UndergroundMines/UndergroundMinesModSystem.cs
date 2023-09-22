@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 
@@ -261,8 +262,12 @@ namespace UndergroundMines
                     // Gets a random schematic of the schematic type
                     BlockSchematic schematic = FSchematics.GetRandomSchematicByType(structure, _schematics);
 
+                    // Data to look for the rock type in the area & rockType in the area
+                    var chunkData = request.Chunks[chunk.BlockY / _chunkSize];
+                    string rockType = FChunk.GetRockType(_chunkSize, chunkData, _world);
+
                     // Places the above schematic
-                    FSchematics.Place(_blockAccessor, _world, chunk, schematic, structure.Rotation);
+                    FSchematics.Place(_blockAccessor, _world, chunk, schematic, structure.Rotation, rockType);
 
                     // Log where the new structure has been placed.
                     // ! Remove in production!
@@ -288,7 +293,7 @@ namespace UndergroundMines
                     notGeneratedChunkExitsList += $"{item}, ";
                 }
 
-                _api.Server.LogDebug($"\n[{ModInfo.MOD_NAME}] X {FTesting.CoordinateByChunk(chunk.BlockX, _wd.X, _chunkSize)} - Z {FTesting.CoordinateByChunk(chunk.BlockZ, _wd.Z, _chunkSize)}\n[{ModInfo.MOD_NAME}] {exits.Count} exits | {existsList} \n[{ModInfo.MOD_NAME}] {structuredExits.Count} structured exits | {structuredExitsList} \n[{ModInfo.MOD_NAME}] {notGeneratedChunkExits.Count} not generated | {notGeneratedChunkExitsList}\n[{ModInfo.MOD_NAME}] {(structure == null ? "null" : structure.Type)} type - {(structure == null ? "null" : structure.Rotation)} rotation");
+                //_api.Server.LogDebug($"\n[{ModInfo.MOD_NAME}] X {FTesting.CoordinateByChunk(chunk.BlockX, _wd.X, _chunkSize)} - Z {FTesting.CoordinateByChunk(chunk.BlockZ, _wd.Z, _chunkSize)}\n[{ModInfo.MOD_NAME}] {exits.Count} exits | {existsList} \n[{ModInfo.MOD_NAME}] {structuredExits.Count} structured exits | {structuredExitsList} \n[{ModInfo.MOD_NAME}] {notGeneratedChunkExits.Count} not generated | {notGeneratedChunkExitsList}\n[{ModInfo.MOD_NAME}] {(structure == null ? "null" : structure.Type)} type - {(structure == null ? "null" : structure.Rotation)} rotation");
 
                 // Save the structure and chunk where it's placed
                 try
