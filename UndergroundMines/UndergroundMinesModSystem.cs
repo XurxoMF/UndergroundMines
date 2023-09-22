@@ -17,6 +17,8 @@ namespace UndergroundMines
 
         private int _seaLevel;
 
+        private WorldDimensions _wd;
+
         private Dictionary<ESchematicType, List<BlockSchematic>> _schematics;
 
         private IWorldGenBlockAccessor _blockAccessor;
@@ -38,6 +40,7 @@ namespace UndergroundMines
             _world = _api.World;
             _seaLevel = _api.World.SeaLevel;
             _chunkSize = _api.WorldManager.ChunkSize;
+            _wd = new WorldDimensions(_api.WorldManager.MapSizeX, _api.WorldManager.MapSizeY, _api.WorldManager.MapSizeZ);
 
             _schematics = FSchematics.LoadSchematics(_api);
 
