@@ -32,6 +32,11 @@ namespace UndergroundMines
             return forSide == EnumAppSide.Server;
         }
 
+        public override double ExecuteOrder()
+        {
+            return 0.50;
+        }
+
         public override void StartServerSide(ICoreServerAPI api)
         {
             base.StartServerSide(api);
@@ -44,7 +49,7 @@ namespace UndergroundMines
 
             _schematics = FSchematics.LoadSchematics(_api);
 
-            _api.Event.ChunkColumnGeneration(OnChunkColumnGeneration, EnumWorldGenPass.Vegetation, "standard");
+            _api.Event.ChunkColumnGeneration(OnChunkColumnGeneration, EnumWorldGenPass.TerrainFeatures, "standard");
             _api.Event.GetWorldgenBlockAccessor(OnWorldGenBlockAccessor);
 
             _api.Event.GameWorldSave += SaveData;
