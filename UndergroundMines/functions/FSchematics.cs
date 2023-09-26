@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
@@ -64,25 +65,58 @@ namespace UndergroundMines
             return schematics[structure.Type][new Random().Next(schematics[structure.Type].Count)];
         }
 
-        public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation, string rockType)
+        public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation, string rockType, ICoreServerAPI api)
         {
             var newSchematic = schematic.ClonePacked();
 
-            // var keys = newSchematic.BlockCodes.Keys;
-            // Dictionary<int, AssetLocation> BlockCodes = new();
-            // foreach (var item in keys)
-            // {
-            //     AssetLocation newBlock = new(schematic.BlockCodes[item].Path.Replace("{rock}", rockType));
-            //     BlockCodes.Add(item, newBlock);
-            // }
-            // schematic.BlockCodes = BlockCodes;
+            // Replace {rocktype}, {ore1} & {ore2} with the rockType
+            var keys = newSchematic.BlockCodes.Keys;
 
+            Dictionary<int, AssetLocation> BlockCodes = new();
+
+            var ores = ModConfig.RockTypeAndOres[rockType];
+
+            string ore1 = null;
+            string ore2 = null;
+
+            if (ores != null)
+            {
+                ore1 = ores[new Random().Next(ores.Length)];
+                ore2 = ores[new Random().Next(ores.Length)];
+            }
+
+            foreach (var key in keys)
+            {
+                var asset = "game:" + schematic.BlockCodes[key].Path;
+
+                if (asset.Contains("{rocktype}"))
+                {
+                    asset = asset.Replace("{rocktype}", rockType);
+                }
+                else if (asset.Contains("{orerock}"))
+                {
+                    if (ores != null) // If there is any ore with that rock type
+                    {
+                        asset = asset.Replace("{ore1}", ore1).Replace("{ore2}", ore2).Replace("{orerock}", rockType);
+                    }
+                    else // If there is no ores with that rock type
+                    {
+                        asset = asset.Replace("{ore1}", "poor-nativecopper").Replace("{ore2}", "quartz").Replace("{orerock}", "andesite");
+                    }
+                }
+
+                AssetLocation newBlock = new(asset);
+                BlockCodes.Add(key, newBlock);
+            }
+            newSchematic.BlockCodes = BlockCodes;
+
+            // Rotate the structure, Init and Place
             newSchematic.TransformWhilePacked(world, EnumOrigin.BottomCenter, (int)rotation);
             newSchematic.Init(blockAccessor);
             BlockPos pos = new(
                 chunk.BlockX, chunk.BlockY, chunk.BlockZ
             );
-            newSchematic.Place(blockAccessor, world, newSchematic.GetStartPos(pos, EnumOrigin.BottomCenter));
+            newSchematic.Place(blockAccessor, world, newSchematic.GetStartPos(pos, EnumOrigin.BottomCenter), EnumReplaceMode.ReplaceAllNoAir);
         }
     }
 }

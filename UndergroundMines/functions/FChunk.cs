@@ -37,6 +37,8 @@ namespace UndergroundMines
 
             if (rockType == "") rockType = "andesite";
 
+            if (!ModConfig.RockTypeAndOres.ContainsKey(rockType)) rockType = "andesite";
+
             return rockType;
         }
     }

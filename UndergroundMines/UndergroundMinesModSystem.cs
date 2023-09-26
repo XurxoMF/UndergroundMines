@@ -271,7 +271,7 @@ namespace UndergroundMines
                     string rockType = FChunk.GetRockType(_chunkSize, chunkData, _world, chunk.BlockY % _chunkSize);
 
                     // Places the above schematic
-                    FSchematics.Place(_blockAccessor, _world, chunk, schematic, structure.Rotation, rockType);
+                    FSchematics.Place(_blockAccessor, _world, chunk, schematic, structure.Rotation, rockType, _api);
 
                     // Log where the new structure has been placed.
                     // ! Remove in production!

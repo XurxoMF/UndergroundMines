@@ -46,7 +46,7 @@ namespace UndergroundMines
         > quartz_nativesilver - "poor-quartz_nativesilver", "medium-quartz_nativesilver", "rich-quartz_nativesilver", "bountiful-quartz_nativesilver",
         */
 
-        public static readonly Dictionary<string, string[]> RockTypeOres = new(){
+        public static readonly Dictionary<string, string[]> RockTypeAndOres = new(){
             {"andesite",
                 new[]{
                     "poor-nativecopper", "medium-nativecopper", "rich-nativecopper", "poor-quartz_nativegold", "medium-quartz_nativegold", "rich-quartz_nativegold", "bountiful-quartz_nativegold", "poor-cassiterite", "medium-cassiterite", "poor-chromite", "medium-chromite", "poor-ilmenite", "medium-ilmenite", "poor-sphalerite", "medium-sphalerite", "poor-quartz_nativesilver", "medium-quartz_nativesilver", "rich-quartz_nativesilver", "bountiful-quartz_nativesilver", "poor-bismuthinite", "medium-bismuthinite", "rich-bismuthinite", "poor-magnetite", "medium-magnetite", "rich-magnetite", "poor-pentlandite", "medium-pentlandite", "poor-uranium", "medium-uranium", "rich-uranium", "cinnabar", "quartz"

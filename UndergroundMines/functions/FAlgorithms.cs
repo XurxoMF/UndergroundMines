@@ -414,8 +414,8 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.05 => ESchematicType.UndergroundEnd, // 5%
-                <= 1.0 => ESchematicType.Null, // 95%
+                <= 0.05 => ESchematicType.UndergroundEnd, // 10%
+                <= 1.0 => ESchematicType.Null, // 90%
                 _ => ESchematicType.Null
             };
         }
@@ -439,7 +439,7 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.8 => ESchematicType.UndergroundMine, // 70%
+                <= 0.7 => ESchematicType.UndergroundMine, // 70%
                 <= 1 => ESchematicType.UndergroundAngle, // 30%
                 _ => ESchematicType.UndergroundMine
             };
@@ -451,8 +451,8 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.6 => ESchematicType.UndergroundMine, // 60%
-                <= 1 => ESchematicType.UndergroundCross, // 40%
+                <= 0.4 => ESchematicType.UndergroundMine, // 40%
+                <= 1 => ESchematicType.UndergroundCross, // 60%
                 _ => ESchematicType.UndergroundMine
             };
         }
@@ -463,8 +463,8 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.6 => ESchematicType.UndergroundAngle, // 60%
-                <= 1 => ESchematicType.UndergroundCross, // 40%
+                <= 0.4 => ESchematicType.UndergroundAngle, // 40%
+                <= 1 => ESchematicType.UndergroundCross, // 60%
                 _ => ESchematicType.UndergroundMine
             };
         }
