@@ -89,6 +89,33 @@ namespace UndergroundMines
                 }
                 else if (structuredExits.Count <= 0)
                 { // No structure with direct exit in colindant chunks.
+                    /* Remove comments from this code and comment the code between "// NEXT PART" comments to generate 100% infinite mines(but it'll generate too many mines)
+                    if (exits.Count == 2)
+                    {
+                        if (!FAlgorithms.AreSidesOpposite(exits))
+                        { // exits in angle
+                            structure = FAlgorithms.GetStructureWithAdjustedRotation(ESchematicType.UndergroundAngle, exits);
+                            generated = true;
+                        }
+                    }
+                    else
+                    {
+                        var randomType = FAlgorithms.REndOrNull();
+
+                        if (randomType == ESchematicType.Null)
+                        {
+                            structure = null;
+                            generated = true;
+                        }
+                        else
+                        {
+                            structure = FAlgorithms.GetStructureWithAdjustedRotation(randomType, exits);
+                            generated = true;
+                        }
+                    }
+                    */
+
+                    // NEXT PART
                     var randomType = FAlgorithms.REndOrNull();
 
                     if (randomType == ESchematicType.Null)
@@ -101,6 +128,7 @@ namespace UndergroundMines
                         structure = FAlgorithms.GetStructureWithAdjustedRotation(randomType, exits);
                         generated = true;
                     }
+                    // NEXT PART
                 }
                 else
                 { // At least 1 structure with exit in colindant chunks.

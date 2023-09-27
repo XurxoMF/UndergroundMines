@@ -234,7 +234,7 @@ namespace UndergroundMines
         {
             if (type == ESchematicType.UndergroundEnd)
             { // Only one exit structures.
-                int rand = new Random().Next(sides.Count - 1);
+                int rand = new Random().Next(sides.Count);
                 return new Structure(type, sides[rand]);
             }
 
@@ -414,8 +414,8 @@ namespace UndergroundMines
         {
             return new Random().NextDouble() switch
             {
-                <= 0.05 => ESchematicType.UndergroundEnd, // 10%
-                <= 1.0 => ESchematicType.Null, // 90%
+                <= 0.15 => ESchematicType.UndergroundEnd, // 15%
+                <= 1.0 => ESchematicType.Null, // 85%
                 _ => ESchematicType.Null
             };
         }
@@ -442,6 +442,19 @@ namespace UndergroundMines
                 <= 0.7 => ESchematicType.UndergroundMine, // 70%
                 <= 1 => ESchematicType.UndergroundAngle, // 30%
                 _ => ESchematicType.UndergroundMine
+            };
+        }
+
+        /// <summary>Random structure between UndergroundAngle, UndergroundEnd and Null.</summary>
+        /// <returns>The wining structure type.</returns>
+        public static ESchematicType RAngleOrEndORNull()
+        {
+            return new Random().NextDouble() switch
+            {
+                <= 0.05 => ESchematicType.UndergroundEnd, // 5%
+                <= 0.1 => ESchematicType.UndergroundAngle, // 5%
+                <= 1.0 => ESchematicType.Null, // 90%
+                _ => ESchematicType.Null
             };
         }
 
