@@ -34,7 +34,7 @@ namespace UndergroundMines
 
         public override double ExecuteOrder()
         {
-            return 0.50;
+            return 0.25;
         }
 
         public override void StartServerSide(ICoreServerAPI api)
