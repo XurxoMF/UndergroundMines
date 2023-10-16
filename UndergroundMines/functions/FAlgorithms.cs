@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 using Vintagestory.ServerMods;
 
@@ -80,74 +81,99 @@ namespace UndergroundMines
             return false;
         }
 
-        /// <summary>Checks if the N-E-S-W chunks in the side of the given chunk have exit.<br/>
+        /// <summary>Checks if the N-E-S-W chunks in the side of the given chunk have exit(Not generated chunk, Structure with exit and NO WATER IN THE BORdER OF THE ACTUAL CHUNK).<br/>
         /// No chunk registered = true | Structure with exit = true | No structure generated = false</summary>
         /// <param name="chunk">Chunk to check sides.</param>
         /// <param name="data">SavedData to look for the created structure and orientation.</param>
         /// <param name="distance">Number of chunks away of the original chunk. 1 is the inmediatly next chunk.</param>
         /// <returns>List with the sides with exit.</returns>
-        public static List<ERotation> CheckExitSides(int chunkX, int chunkZ, int chunkSize, int seaLevel, SavedData data, int distance)
+        public static List<ERotation> CheckExitSides(int chunkX, int chunkZ, int chunkSize, int seaLevel, SavedData data, int distance, IWorldGenBlockAccessor blockAccessor)
         {
             List<ERotation> exits = new();
+            // Chunk where we are rn.
+            Chunk actualChunk = FChunk.GetChunk(chunkX, chunkZ, chunkSize, seaLevel);
+            // BlockPath of the block at a given position.
+            string path = "";
+            // Chunk we want to check.
             Chunk newChunk;
 
             // north chunk
-            newChunk = FChunk.GetChunk(chunkX, chunkZ - distance, chunkSize, seaLevel);
-            if (!data.GeneratedStructures.ContainsKey(newChunk))
+            // Get path for the north block at the top of the structure.
+            path = blockAccessor.GetBlock(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ - (chunkSize / 2)).Code.Path;
+            if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                exits.Add(ERotation.North);
-            }
-            else
-            {
-                var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(structure, ERotation.South))
+                newChunk = FChunk.GetChunk(chunkX, chunkZ - distance, chunkSize, seaLevel);
+                if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.North);
+                }
+                else
+                {
+                    var structure = data.GeneratedStructures[newChunk];
+                    if (structure != null && HasExitInSide(structure, ERotation.South))
+                    {
+                        exits.Add(ERotation.North);
+                    }
                 }
             }
 
             // east chunk
-            newChunk = FChunk.GetChunk(chunkX + distance, chunkZ, chunkSize, seaLevel);
-            if (!data.GeneratedStructures.ContainsKey(newChunk))
+            // Get path for the east block at the top of the structure.
+            path = blockAccessor.GetBlock(actualChunk.BlockX + (chunkSize / 2) - 1, actualChunk.BlockY + 8, actualChunk.BlockZ).Code.Path;
+            if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                exits.Add(ERotation.East);
-            }
-            else
-            {
-                var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(structure, ERotation.West))
+                newChunk = FChunk.GetChunk(chunkX + distance, chunkZ, chunkSize, seaLevel);
+                if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.East);
+                }
+                else
+                {
+                    var structure = data.GeneratedStructures[newChunk];
+                    if (structure != null && HasExitInSide(structure, ERotation.West))
+                    {
+                        exits.Add(ERotation.East);
+                    }
                 }
             }
 
             // south chunk
-            newChunk = FChunk.GetChunk(chunkX, chunkZ + distance, chunkSize, seaLevel);
-            if (!data.GeneratedStructures.ContainsKey(newChunk))
+            // Get path for the east block at the top of the structure.
+            path = blockAccessor.GetBlock(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ + (chunkSize / 2) - 1).Code.Path;
+            if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                exits.Add(ERotation.South);
-            }
-            else
-            {
-                var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(structure, ERotation.North))
+                newChunk = FChunk.GetChunk(chunkX, chunkZ + distance, chunkSize, seaLevel);
+                if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.South);
+                }
+                else
+                {
+                    var structure = data.GeneratedStructures[newChunk];
+                    if (structure != null && HasExitInSide(structure, ERotation.North))
+                    {
+                        exits.Add(ERotation.South);
+                    }
                 }
             }
 
             // west chunk
-            newChunk = FChunk.GetChunk(chunkX - distance, chunkZ, chunkSize, seaLevel);
-            if (!data.GeneratedStructures.ContainsKey(newChunk))
+            // Get path for the north block at the top of the structure.
+            path = blockAccessor.GetBlock(actualChunk.BlockX - (chunkSize / 2), actualChunk.BlockY + 8, actualChunk.BlockZ).Code.Path;
+            if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                exits.Add(ERotation.West);
-            }
-            else
-            {
-                var structure = data.GeneratedStructures[newChunk];
-                if (structure != null && HasExitInSide(structure, ERotation.East))
+                newChunk = FChunk.GetChunk(chunkX - distance, chunkZ, chunkSize, seaLevel);
+                if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.West);
+                }
+                else
+                {
+                    var structure = data.GeneratedStructures[newChunk];
+                    if (structure != null && HasExitInSide(structure, ERotation.East))
+                    {
+                        exits.Add(ERotation.West);
+                    }
                 }
             }
 
@@ -340,72 +366,6 @@ namespace UndergroundMines
             }
 
             return res;
-        }
-
-        public static List<ERotation> ColindantToACross(int chunkX, int chunkZ, int chunkSize, int seaLevel, List<ERotation> sides, SavedData data)
-        {
-            HashSet<ERotation> res = new();
-
-            foreach (var side in sides)
-            {
-                // north chunk
-                if (side == ERotation.North)
-                {
-                    Chunk newChunk = FChunk.GetChunk(chunkX, chunkZ - 1, chunkSize, seaLevel);
-                    if (data.GeneratedStructures.ContainsKey(newChunk))
-                    {
-                        Structure structure = data.GeneratedStructures[newChunk];
-                        if (structure != null && structure.Type == ESchematicType.UndergroundCross)
-                        {
-                            res.Add(ERotation.North);
-                        }
-                    }
-                }
-
-                // east chunk
-                if (side == ERotation.East)
-                {
-                    Chunk newChunk = FChunk.GetChunk(chunkX + 1, chunkZ, chunkSize, seaLevel);
-                    if (data.GeneratedStructures.ContainsKey(newChunk))
-                    {
-                        Structure structure = data.GeneratedStructures[newChunk];
-                        if (structure != null && structure.Type == ESchematicType.UndergroundCross)
-                        {
-                            res.Add(ERotation.East);
-                        }
-                    }
-                }
-
-                // south chunk
-                if (side == ERotation.South)
-                {
-                    Chunk newChunk = FChunk.GetChunk(chunkX, chunkZ + 1, chunkSize, seaLevel);
-                    if (data.GeneratedStructures.ContainsKey(newChunk))
-                    {
-                        Structure structure = data.GeneratedStructures[newChunk];
-                        if (structure != null && structure.Type == ESchematicType.UndergroundCross)
-                        {
-                            res.Add(ERotation.South);
-                        }
-                    }
-                }
-
-                // west chunk
-                if (side == ERotation.West)
-                {
-                    Chunk newChunk = FChunk.GetChunk(chunkX - 1, chunkZ, chunkSize, seaLevel);
-                    if (data.GeneratedStructures.ContainsKey(newChunk))
-                    {
-                        Structure structure = data.GeneratedStructures[newChunk];
-                        if (structure != null && structure.Type == ESchematicType.UndergroundCross)
-                        {
-                            res.Add(ERotation.West);
-                        }
-                    }
-                }
-            }
-
-            return res.ToList();
         }
 
         // CHOOSE RANDOM STRUCTURES

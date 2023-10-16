@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 
@@ -51,6 +52,7 @@ namespace UndergroundMines
 
             _api.Event.ChunkColumnGeneration(OnChunkColumnGeneration, EnumWorldGenPass.TerrainFeatures, "standard");
             _api.Event.GetWorldgenBlockAccessor(OnWorldGenBlockAccessor);
+            _api.Event.MapRegionGeneration(OnMapRegionGeneration, "standard");
 
             _api.Event.GameWorldSave += SaveData;
             _savedData = LoadData();
@@ -65,12 +67,7 @@ namespace UndergroundMines
             bool generated = false;
 
             // Sides with exit or with no generated chunks NO SIDES WITHOUT STRUCTURES IN GENERATED CHUNKS
-            var exits = FAlgorithms.CheckExitSides(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, _savedData, 1);
-            // Sides with exit and structure, NO SIDES WITHOUT STRUCTURE and NO SIDES WITHOUT CHUNK GENERATED.
-            List<ERotation> structuredExits = new();
-            // ONLY NOT GENERATED CHUNK SIDES
-            List<ERotation> notGeneratedChunkExits = new();
-            List<ERotation> sidesColindantToACross = new();
+            var exits = FAlgorithms.CheckExitSides(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, _savedData, 1, _blockAccessor);
 
             if (exits.Count <= 0)
             { // No exit in any side
@@ -79,8 +76,10 @@ namespace UndergroundMines
             }
             else
             { // Exit in some of the sides
-                structuredExits = FAlgorithms.CheckStructuredSides(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, exits, _savedData);
-                notGeneratedChunkExits = exits.Except(structuredExits).ToList();
+                // Sides with exit and structure, NO SIDES WITHOUT STRUCTURE and NO SIDES WITHOUT CHUNK GENERATED.
+                List<ERotation> structuredExits = FAlgorithms.CheckStructuredSides(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, exits, _savedData);
+                // ONLY NOT GENERATED CHUNK SIDES
+                List<ERotation> notGeneratedChunkExits = exits.Except(structuredExits).ToList();
 
                 if (notGeneratedChunkExits.Count == 4)
                 {
@@ -89,7 +88,8 @@ namespace UndergroundMines
                 }
                 else if (structuredExits.Count <= 0)
                 { // No structure with direct exit in colindant chunks.
-                    /* Remove comments from this code and comment the code between "// NEXT PART" comments to generate 100% infinite mines(but it'll generate too many mines)
+                    // 100% INFINITE
+                    /*
                     if (exits.Count == 2)
                     {
                         if (!FAlgorithms.AreSidesOpposite(exits))
@@ -114,8 +114,9 @@ namespace UndergroundMines
                         }
                     }
                     */
+                    // 100% INFINITE
 
-                    // NEXT PART
+                    // NOT 100% INFINITE
                     var randomType = FAlgorithms.REndOrNull();
 
                     if (randomType == ESchematicType.Null)
@@ -128,7 +129,7 @@ namespace UndergroundMines
                         structure = FAlgorithms.GetStructureWithAdjustedRotation(randomType, exits);
                         generated = true;
                     }
-                    // NEXT PART
+                    // NOT 100% INFINITE
                 }
                 else
                 { // At least 1 structure with exit in colindant chunks.
@@ -343,6 +344,11 @@ namespace UndergroundMines
         private void OnWorldGenBlockAccessor(IChunkProviderThread chunkProvider)
         {
             _blockAccessor = chunkProvider.GetBlockAccessor(false);
+        }
+
+        private void OnMapRegionGeneration(IMapRegion region, int regionX, int regionZ, ITreeAttribute chunkGenParams)
+        {
+
         }
 
         // DATA MANAGING
