@@ -328,28 +328,21 @@ namespace UndergroundMines
             {
                 _config = _api.LoadModConfig<Config>($"{ModInfo.MOD_NAME}.json");
             }
-            catch (Exception e)
+            catch
             {
-                Mod.Logger.Fatal($"[{ModInfo.MOD_NAME}] Error loading mod config(ModConfig/{ModInfo.MOD_NAME}.json)\n{e.Message}\nIf you've changed anything in the config file, please, check if the value is correct! IF don't, report this as a bug in the Official Discord Server or in ModDB Mod Page!");
-            }
-
-            // If there is no config or this one had any error while loading generate default config!
-            if (_config == null)
-            {
-                _api.Logger.Event($"[{ModInfo.MOD_NAME}] No config file was found or it has some typo error. Loading default config!");
+                _api.Logger.Error($"[{ModInfo.MOD_NAME}] [Config] There is no config file or it contain errors! Applying default config!");
                 _config = new Config(ModStaticConfig.DefaultHeight, true);
-                _api.StoreModConfig(_config, $"{ModInfo.MOD_NAME}.json");
-            }
-            else
-            {
-                if (_config.yLevel > 1 || _config.yLevel < 0)
-                {
-                    _api.Logger.Fatal($"[{ModInfo.MOD_NAME}] yLevel config has an invalid value! Must be a number between 0.0 and 1.0! It'll be changed to default value ({ModStaticConfig.DefaultHeight})!");
-                    _config.yLevel = ModStaticConfig.DefaultHeight;
-                }
             }
 
-            _api.Logger.Event($"[{ModInfo.MOD_NAME}] Config succesfully loaded.");
+            // Value testing, in case some of them is invalid.
+            if (_config.yLevel > 1 || _config.yLevel < 0)
+            {
+                _api.Logger.Error($"[{ModInfo.MOD_NAME}] [Config] yLevel has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultHeight})!");
+                _config.yLevel = ModStaticConfig.DefaultHeight;
+            }
+
+            _api.StoreModConfig(_config, $"{ModInfo.MOD_NAME}.json");
+            _api.Logger.Event($"[{ModInfo.MOD_NAME}] [Config] Config succesfully loaded.");
         }
 
         // DATA MANAGING
