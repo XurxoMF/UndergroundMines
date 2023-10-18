@@ -65,7 +65,7 @@ namespace UndergroundMines
             return schematics[structure.Type][new Random().Next(schematics[structure.Type].Count)];
         }
 
-        public static void Place(IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation, string rockType, ICoreServerAPI api)
+        public static void Place(Config config, IBlockAccessor blockAccessor, IWorldAccessor world, Chunk chunk, BlockSchematic schematic, ERotation rotation, string rockType, ICoreServerAPI api)
         {
             var newSchematic = schematic.ClonePacked();
 
@@ -74,7 +74,7 @@ namespace UndergroundMines
 
             Dictionary<int, AssetLocation> BlockCodes = new();
 
-            var ores = ModConfig.RockTypeAndOres[rockType];
+            var ores = ModStaticConfig.RockTypeAndOres[rockType];
 
             string ore1 = null;
             string ore2 = null;
@@ -95,13 +95,20 @@ namespace UndergroundMines
                 }
                 else if (asset.Contains("{orerock}"))
                 {
-                    if (ores != null) // If there is any ore with that rock type
+                    if (config.aditionalOres)
                     {
-                        asset = asset.Replace("{ore1}", ore1).Replace("{ore2}", ore2).Replace("{orerock}", rockType);
+                        if (ores != null) // If there is any ore with that rock type
+                        {
+                            asset = asset.Replace("{ore1}", ore1).Replace("{ore2}", ore2).Replace("{orerock}", rockType);
+                        }
+                        else // If there is no ores with that rock type
+                        {
+                            asset = asset.Replace("{ore1}", "poor-nativecopper").Replace("{ore2}", "quartz").Replace("{orerock}", "andesite");
+                        }
                     }
-                    else // If there is no ores with that rock type
+                    else
                     {
-                        asset = asset.Replace("{ore1}", "poor-nativecopper").Replace("{ore2}", "quartz").Replace("{orerock}", "andesite");
+                        asset = "null";
                     }
                 }
 

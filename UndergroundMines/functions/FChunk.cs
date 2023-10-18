@@ -8,9 +8,9 @@ namespace UndergroundMines
 {
     public class FChunk
     {
-        public static Chunk GetChunk(int chunkX, int chunkZ, int chunkSize, int seaLevel)
+        public static Chunk GetChunk(Config config, int chunkX, int chunkZ, int chunkSize, int seaLevel)
         {
-            return new(chunkX * chunkSize + (chunkSize / 2), (int)Math.Round(seaLevel * 0.48), chunkZ * chunkSize + (chunkSize / 2), chunkSize);
+            return new(chunkX * chunkSize + (chunkSize / 2), (int)Math.Round(seaLevel * config.yLevel), chunkZ * chunkSize + (chunkSize / 2), chunkSize);
         }
 
         public static string GetRockType(int chunkSize, IServerChunk chunkData, IWorldAccessor world, int start)
@@ -37,7 +37,7 @@ namespace UndergroundMines
 
             if (rockType == "") rockType = "andesite";
 
-            if (!ModConfig.RockTypeAndOres.ContainsKey(rockType)) rockType = "andesite";
+            if (!ModStaticConfig.RockTypeAndOres.ContainsKey(rockType)) rockType = "andesite";
 
             return rockType;
         }

@@ -18,8 +18,6 @@ namespace UndergroundMines
 
         private int _seaLevel;
 
-        private WorldDimensions _wd;
-
         private Dictionary<ESchematicType, List<BlockSchematic>> _schematics;
 
         private IWorldGenBlockAccessor _blockAccessor;
@@ -27,6 +25,8 @@ namespace UndergroundMines
         private IWorldAccessor _world;
 
         private SavedData _savedData;
+
+        private Config _config;
 
         public override bool ShouldLoad(EnumAppSide forSide)
         {
@@ -46,13 +46,13 @@ namespace UndergroundMines
             _world = _api.World;
             _seaLevel = _api.World.SeaLevel;
             _chunkSize = _api.WorldManager.ChunkSize;
-            _wd = new WorldDimensions(_api.WorldManager.MapSizeX, _api.WorldManager.MapSizeY, _api.WorldManager.MapSizeZ);
 
             _schematics = FSchematics.LoadSchematics(_api);
 
-            _api.Event.ChunkColumnGeneration(OnChunkColumnGeneration, EnumWorldGenPass.TerrainFeatures, "standard");
             _api.Event.GetWorldgenBlockAccessor(OnWorldGenBlockAccessor);
-            _api.Event.MapRegionGeneration(OnMapRegionGeneration, "standard");
+            _api.Event.InitWorldGenerator(InitWorldGen, "standard");
+
+            _api.Event.ChunkColumnGeneration(OnChunkColumnGeneration, EnumWorldGenPass.TerrainFeatures, "standard");
 
             _api.Event.GameWorldSave += SaveData;
             _savedData = LoadData();
@@ -62,12 +62,12 @@ namespace UndergroundMines
 
         private void OnChunkColumnGeneration(IChunkColumnGenerateRequest request)
         {
-            Chunk chunk = FChunk.GetChunk(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel);
+            Chunk chunk = FChunk.GetChunk(_config, request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel);
             Structure structure = null;
             bool generated = false;
 
             // Sides with exit or with no generated chunks NO SIDES WITHOUT STRUCTURES IN GENERATED CHUNKS
-            var exits = FAlgorithms.CheckExitSides(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, _savedData, 1, _blockAccessor);
+            var exits = FAlgorithms.CheckExitSides(_config, request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, _savedData, 1, _blockAccessor);
 
             if (exits.Count <= 0)
             { // No exit in any side
@@ -77,7 +77,7 @@ namespace UndergroundMines
             else
             { // Exit in some of the sides
                 // Sides with exit and structure, NO SIDES WITHOUT STRUCTURE and NO SIDES WITHOUT CHUNK GENERATED.
-                List<ERotation> structuredExits = FAlgorithms.CheckStructuredSides(request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, exits, _savedData);
+                List<ERotation> structuredExits = FAlgorithms.CheckStructuredSides(_config, request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel, exits, _savedData);
                 // ONLY NOT GENERATED CHUNK SIDES
                 List<ERotation> notGeneratedChunkExits = exits.Except(structuredExits).ToList();
 
@@ -300,33 +300,8 @@ namespace UndergroundMines
                     string rockType = FChunk.GetRockType(_chunkSize, chunkData, _world, chunk.BlockY % _chunkSize);
 
                     // Places the above schematic
-                    FSchematics.Place(_blockAccessor, _world, chunk, schematic, structure.Rotation, rockType, _api);
-
-                    // Log where the new structure has been placed.
-                    // ! Remove in production!
-                    // FTesting.LogNewStructure(_api, chunk, _wd, _chunkSize);
+                    FSchematics.Place(_config, _blockAccessor, _world, chunk, schematic, structure.Rotation, rockType, _api);
                 }
-
-                // string existsList = "";
-                // string structuredExitsList = "";
-                // string notGeneratedChunkExitsList = "";
-
-                // foreach (var item in exits)
-                // {
-                //     existsList += $"{item}, ";
-                // }
-
-                // foreach (var item in structuredExits)
-                // {
-                //     structuredExitsList += $"{item}, ";
-                // }
-
-                // foreach (var item in notGeneratedChunkExits)
-                // {
-                //     notGeneratedChunkExitsList += $"{item}, ";
-                // }
-
-                //_api.Server.LogDebug($"\n[{ModInfo.MOD_NAME}] X {FTesting.CoordinateByChunk(chunk.BlockX, _wd.X, _chunkSize)} - Z {FTesting.CoordinateByChunk(chunk.BlockZ, _wd.Z, _chunkSize)}\n[{ModInfo.MOD_NAME}] {exits.Count} exits | {existsList} \n[{ModInfo.MOD_NAME}] {structuredExits.Count} structured exits | {structuredExitsList} \n[{ModInfo.MOD_NAME}] {notGeneratedChunkExits.Count} not generated | {notGeneratedChunkExitsList}\n[{ModInfo.MOD_NAME}] {(structure == null ? "null" : structure.Type)} type - {(structure == null ? "null" : structure.Rotation)} rotation");
 
                 // Save the structure and chunk where it's placed
                 try
@@ -346,9 +321,35 @@ namespace UndergroundMines
             _blockAccessor = chunkProvider.GetBlockAccessor(false);
         }
 
-        private void OnMapRegionGeneration(IMapRegion region, int regionX, int regionZ, ITreeAttribute chunkGenParams)
+        private void InitWorldGen()
         {
+            // Try loading config.
+            try
+            {
+                _config = _api.LoadModConfig<Config>($"{ModInfo.MOD_NAME}.json");
+            }
+            catch (Exception e)
+            {
+                Mod.Logger.Fatal($"[{ModInfo.MOD_NAME}] Error loading mod config(ModConfig/{ModInfo.MOD_NAME}.json)\n{e.Message}\nIf you've changed anything in the config file, please, check if the value is correct! IF don't, report this as a bug in the Official Discord Server or in ModDB Mod Page!");
+            }
 
+            // If there is no config or this one had any error while loading generate default config!
+            if (_config == null)
+            {
+                _api.Logger.Event($"[{ModInfo.MOD_NAME}] No config file was found or it has some typo error. Loading default config!");
+                _config = new Config(ModStaticConfig.DefaultHeight, true);
+                _api.StoreModConfig(_config, $"{ModInfo.MOD_NAME}.json");
+            }
+            else
+            {
+                if (_config.yLevel > 1 || _config.yLevel < 0)
+                {
+                    _api.Logger.Fatal($"[{ModInfo.MOD_NAME}] yLevel config has an invalid value! Must be a number between 0.0 and 1.0! It'll be changed to default value ({ModStaticConfig.DefaultHeight})!");
+                    _config.yLevel = ModStaticConfig.DefaultHeight;
+                }
+            }
+
+            _api.Logger.Event($"[{ModInfo.MOD_NAME}] Config succesfully loaded.");
         }
 
         // DATA MANAGING

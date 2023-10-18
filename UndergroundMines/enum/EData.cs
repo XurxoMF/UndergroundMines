@@ -7,9 +7,9 @@ namespace UndergroundMines
         public const string MOD_NAME = "UndergroundMines";
     }
 
-    public class ModConfig
+    public class ModStaticConfig
     {
-        public static readonly string[] AvailableRockTypes = new[] { "andesite", "chalk", "chert", "conglomer", "claystone", "granite", "sandstone", "shale", "basalt", "peridotite", "phyllite", "slate" };
+        public static double DefaultHeight = 0.48;
 
         /* ORE-QUALITY LIST
         > nativecopper -------- "poor-nativecopper", "medium-nativecopper", "rich-nativecopper", "bountiful-nativecopper",

@@ -87,13 +87,13 @@ namespace UndergroundMines
         /// <param name="data">SavedData to look for the created structure and orientation.</param>
         /// <param name="distance">Number of chunks away of the original chunk. 1 is the inmediatly next chunk.</param>
         /// <returns>List with the sides with exit.</returns>
-        public static List<ERotation> CheckExitSides(int chunkX, int chunkZ, int chunkSize, int seaLevel, SavedData data, int distance, IWorldGenBlockAccessor blockAccessor)
+        public static List<ERotation> CheckExitSides(Config config, int chunkX, int chunkZ, int chunkSize, int seaLevel, SavedData data, int distance, IWorldGenBlockAccessor blockAccessor)
         {
             List<ERotation> exits = new();
             // Chunk where we are rn.
-            Chunk actualChunk = FChunk.GetChunk(chunkX, chunkZ, chunkSize, seaLevel);
+            Chunk actualChunk = FChunk.GetChunk(config, chunkX, chunkZ, chunkSize, seaLevel);
             // BlockPath of the block at a given position.
-            string path = "";
+            string path;
             // Chunk we want to check.
             Chunk newChunk;
 
@@ -102,7 +102,7 @@ namespace UndergroundMines
             path = blockAccessor.GetBlock(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ - (chunkSize / 2)).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                newChunk = FChunk.GetChunk(chunkX, chunkZ - distance, chunkSize, seaLevel);
+                newChunk = FChunk.GetChunk(config, chunkX, chunkZ - distance, chunkSize, seaLevel);
                 if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.North);
@@ -122,7 +122,7 @@ namespace UndergroundMines
             path = blockAccessor.GetBlock(actualChunk.BlockX + (chunkSize / 2) - 1, actualChunk.BlockY + 8, actualChunk.BlockZ).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                newChunk = FChunk.GetChunk(chunkX + distance, chunkZ, chunkSize, seaLevel);
+                newChunk = FChunk.GetChunk(config, chunkX + distance, chunkZ, chunkSize, seaLevel);
                 if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.East);
@@ -142,7 +142,7 @@ namespace UndergroundMines
             path = blockAccessor.GetBlock(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ + (chunkSize / 2) - 1).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                newChunk = FChunk.GetChunk(chunkX, chunkZ + distance, chunkSize, seaLevel);
+                newChunk = FChunk.GetChunk(config, chunkX, chunkZ + distance, chunkSize, seaLevel);
                 if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.South);
@@ -162,7 +162,7 @@ namespace UndergroundMines
             path = blockAccessor.GetBlock(actualChunk.BlockX - (chunkSize / 2), actualChunk.BlockY + 8, actualChunk.BlockZ).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
-                newChunk = FChunk.GetChunk(chunkX - distance, chunkZ, chunkSize, seaLevel);
+                newChunk = FChunk.GetChunk(config, chunkX - distance, chunkZ, chunkSize, seaLevel);
                 if (!data.GeneratedStructures.ContainsKey(newChunk))
                 {
                     exits.Add(ERotation.West);
@@ -186,7 +186,7 @@ namespace UndergroundMines
         /// <param name="sides">Array with the sides to check.</param>
         /// <param name="data">SavedData to look for structures.</param>
         /// <returns>List with the sides with structures.</returns>
-        public static List<ERotation> CheckStructuredSides(int chunkX, int chunkZ, int chunkSize, int seaLevel, List<ERotation> sides, SavedData data)
+        public static List<ERotation> CheckStructuredSides(Config config, int chunkX, int chunkZ, int chunkSize, int seaLevel, List<ERotation> sides, SavedData data)
         {
             HashSet<ERotation> structures = new();
 
@@ -195,7 +195,7 @@ namespace UndergroundMines
                 // north chunk
                 if (side == ERotation.North)
                 {
-                    Chunk newChunk = FChunk.GetChunk(chunkX, chunkZ - 1, chunkSize, seaLevel);
+                    Chunk newChunk = FChunk.GetChunk(config, chunkX, chunkZ - 1, chunkSize, seaLevel);
                     if (data.GeneratedStructures.ContainsKey(newChunk))
                     {
                         Structure structure = data.GeneratedStructures[newChunk];
@@ -209,7 +209,7 @@ namespace UndergroundMines
                 // east chunk
                 if (side == ERotation.East)
                 {
-                    Chunk newChunk = FChunk.GetChunk(chunkX + 1, chunkZ, chunkSize, seaLevel);
+                    Chunk newChunk = FChunk.GetChunk(config, chunkX + 1, chunkZ, chunkSize, seaLevel);
                     if (data.GeneratedStructures.ContainsKey(newChunk))
                     {
                         Structure structure = data.GeneratedStructures[newChunk];
@@ -223,7 +223,7 @@ namespace UndergroundMines
                 // south chunk
                 if (side == ERotation.South)
                 {
-                    Chunk newChunk = FChunk.GetChunk(chunkX, chunkZ + 1, chunkSize, seaLevel);
+                    Chunk newChunk = FChunk.GetChunk(config, chunkX, chunkZ + 1, chunkSize, seaLevel);
                     if (data.GeneratedStructures.ContainsKey(newChunk))
                     {
                         Structure structure = data.GeneratedStructures[newChunk];
@@ -237,7 +237,7 @@ namespace UndergroundMines
                 // west chunk
                 if (side == ERotation.West)
                 {
-                    Chunk newChunk = FChunk.GetChunk(chunkX - 1, chunkZ, chunkSize, seaLevel);
+                    Chunk newChunk = FChunk.GetChunk(config, chunkX - 1, chunkZ, chunkSize, seaLevel);
                     if (data.GeneratedStructures.ContainsKey(newChunk))
                     {
                         Structure structure = data.GeneratedStructures[newChunk];
