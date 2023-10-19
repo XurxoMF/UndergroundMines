@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 
 namespace UndergroundMines
@@ -13,7 +14,7 @@ namespace UndergroundMines
         /// <returns>true if has exit or false if not.</returns>
         public static bool HasExitInSide(Structure structure, ERotation side)
         {
-            if (structure.Type == ESchematicType.UndergroundCross)
+            if (structure.Type == ESchematicType.UndergroundCross || structure.Type == ESchematicType.EntranceCross)
             { // exit all sides always true
                 return true;
             }
@@ -364,6 +365,23 @@ namespace UndergroundMines
             }
 
             return res;
+        }
+
+        public static int GetEntranceY(IWorldGenBlockAccessor blockAccessor, BlockPos pos, int seaLevel)
+        {
+            List<int> levels = new()
+            {
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z - 4)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X, pos.Y, pos.Z - 4)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z - 4)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z + 5)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X, pos.Y, pos.Z + 5)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z + 5)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z))
+            };
+
+            return levels.Min();
         }
 
         // CHOOSE RANDOM STRUCTURES

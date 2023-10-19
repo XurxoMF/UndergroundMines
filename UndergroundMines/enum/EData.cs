@@ -10,6 +10,7 @@ namespace UndergroundMines
     public class ModStaticConfig
     {
         public static double DefaultHeight = 0.48;
+        public static double DefaultEntrances = 0.1;
 
         /* ORE-QUALITY LIST
         > nativecopper -------- "poor-nativecopper", "medium-nativecopper", "rich-nativecopper", "bountiful-nativecopper",
@@ -137,7 +138,10 @@ namespace UndergroundMines
         UndergroundCross, // default exit all sides
         UndergroundEnd, // default exit only north
         UndergroundMine, // default exit north-south
-        UndergroundAngle // default exit north-east
+        UndergroundAngle, // default exit north-east
+        EntranceCross, // underground cross with entrance
+        EntranceShaft, // shaft going down
+        EntranceEntrance // overground entrance structure
     }
 
     public enum ERotation : int

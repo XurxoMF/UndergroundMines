@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 
@@ -56,7 +57,7 @@ namespace UndergroundMines
             _api.Event.GameWorldSave += SaveData;
             _savedData = LoadData();
 
-            _api.Server.LogEvent($"[{ModInfo.MOD_NAME}] Ready!");
+            _api.Server.LogEvent($"[{ModInfo.MOD_NAME}] Ready! Loadding config...");
         }
 
         private void OnChunkColumnGeneration(IChunkColumnGenerateRequest request)
@@ -291,6 +292,19 @@ namespace UndergroundMines
             {
                 if (structure != null)
                 {
+                    var chunkHeight = FAlgorithms.GetEntranceY(_blockAccessor, new BlockPos(chunk.BlockX, chunk.BlockY, chunk.BlockZ), _seaLevel);
+
+                    // Change cross to entrance cross some times.
+                    if (structure.Type == ESchematicType.UndergroundCross && chunkHeight >= _seaLevel)
+                    {
+                        var rand = new Random().NextDouble();
+
+                        if (rand <= _config.entranceChance)
+                        {
+                            structure = new Structure(ESchematicType.EntranceCross, ERotation.North);
+                        }
+                    }
+
                     // Gets a random schematic of the schematic type
                     BlockSchematic schematic = FSchematics.GetRandomSchematicByType(structure, _schematics);
 
@@ -299,7 +313,37 @@ namespace UndergroundMines
                     string rockType = FChunk.GetRockType(_chunkSize, chunkData, _world, chunk.BlockY % _chunkSize);
 
                     // Places the above schematic
-                    FSchematics.Place(_config, _blockAccessor, _world, chunk, schematic, structure.Rotation, rockType, _api);
+                    FSchematics.PlaceReplacingAll(_config, _blockAccessor, _world, chunk, schematic, structure.Rotation, rockType, _api);
+
+                    if (structure.Type == ESchematicType.EntranceCross)
+                    {
+                        // Each mine is 8 block high, so this is the top block of the streucture, where we want to place the new shaft.
+                        int lastTop = chunk.BlockY + 8;
+                        // Create a new chunk to modify the Y the same ammount of levels.
+                        var newChunk = FChunk.GetChunk(_config, request.ChunkX, request.ChunkZ, _chunkSize, _seaLevel);
+                        newChunk.BlockY += 8;
+
+                        while (lastTop <= chunkHeight)
+                        {
+                            // Gets a random shaft schematic.
+                            BlockSchematic shaftSchematic = FSchematics.GetRandomSchematicByType(new Structure(ESchematicType.EntranceShaft, ERotation.North), _schematics);
+
+                            FSchematics.PlaceWithoutReplacing(_blockAccessor, _world, newChunk, shaftSchematic);
+
+                            // Increate the last top by the shaft height.
+                            lastTop += 4;
+                            // Increase the chunk Y by the same ammount for the next shaft.
+                            newChunk.BlockY += 4;
+                        }
+
+                        // Once all the shaft are placed we'll place the entrance.
+                        BlockSchematic entranceSchematic = FSchematics.GetRandomSchematicByType(new Structure(ESchematicType.EntranceEntrance, ERotation.North), _schematics);
+
+                        // Change chunk Y to the floor level.
+                        newChunk.BlockY = chunkHeight;
+
+                        FSchematics.PlaceWithoutReplacing(_blockAccessor, _world, newChunk, entranceSchematic);
+                    }
                 }
 
                 // Save the structure and chunk where it's placed
@@ -329,19 +373,26 @@ namespace UndergroundMines
             }
             catch
             {
-                _api.Logger.Error($"[{ModInfo.MOD_NAME}] [Config] There is no config file or it contain errors! Applying default config!");
+                _api.Logger.Error($"[{ModInfo.MOD_NAME}] There is no config file or it contain errors! Applying default config!");
                 _config = new Config(ModStaticConfig.DefaultHeight, true);
             }
 
             // Value testing, in case some of them is invalid.
+
             if (_config.yLevel > 1 || _config.yLevel < 0)
             {
-                _api.Logger.Error($"[{ModInfo.MOD_NAME}] [Config] yLevel has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultHeight})!");
+                _api.Logger.Error($"[{ModInfo.MOD_NAME}] yLevel has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultHeight})!");
                 _config.yLevel = ModStaticConfig.DefaultHeight;
             }
 
+            if (_config.entranceChance > 1 || _config.entranceChance < 0)
+            {
+                _api.Logger.Error($"[{ModInfo.MOD_NAME}] entranceChance has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultEntrances})!");
+                _config.entranceChance = ModStaticConfig.DefaultEntrances;
+            }
+
             _api.StoreModConfig(_config, $"{ModInfo.MOD_NAME}.json");
-            _api.Logger.Event($"[{ModInfo.MOD_NAME}] [Config] Config succesfully loaded.");
+            _api.Logger.Event($"[{ModInfo.MOD_NAME}] Config succesfully loaded.");
         }
 
         // DATA MANAGING
