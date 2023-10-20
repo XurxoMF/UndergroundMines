@@ -3,9 +3,9 @@
     "side": "server",
     "modid": "undergroundmines",
     "name": "Underground Mines",
-    "authors": ["XurxoMF"],
+    "authors": ["XurxoMF", "Rata"],
     "description": "Adds underground mines and mineshafts.",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "dependencies": {
         "game": "1.18.0"
     }
