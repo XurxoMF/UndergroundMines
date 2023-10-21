@@ -374,10 +374,12 @@ namespace UndergroundMines
             catch
             {
                 _api.Logger.Error($"[{ModInfo.MOD_NAME}] There is no config file or it contain errors! Applying default config!");
-                _config = new Config(ModStaticConfig.DefaultHeight, true);
             }
 
             // Value testing, in case some of them is invalid.
+
+            // If there is no config loaded...
+            _config ??= new Config();
 
             if (_config.yLevel > 1 || _config.yLevel < 0)
             {

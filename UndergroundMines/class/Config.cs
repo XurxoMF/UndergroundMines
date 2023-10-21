@@ -20,12 +20,5 @@ namespace UndergroundMines
         public Config()
         {
         }
-
-        public Config(double yLevel, bool aditionalOres)
-        {
-            this.yLevel = yLevel;
-            this.aditionalOres = aditionalOres;
-        }
-
     }
 }
