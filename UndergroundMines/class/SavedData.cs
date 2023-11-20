@@ -17,5 +17,12 @@ namespace UndergroundMines
         {
             GeneratedStructures = new Dictionary<Chunk, Structure>();
         }
+
+        public bool ContainsKey(Chunk chunk)
+        {
+            if (GeneratedStructures.ContainsKey(chunk)) return true;
+
+            return false;
+        }
     }
 }

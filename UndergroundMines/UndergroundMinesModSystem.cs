@@ -349,8 +349,11 @@ namespace UndergroundMines
                 // Save the structure and chunk where it's placed
                 try
                 {
-                    _savedData.GeneratedStructures.Add(chunk, structure);
-                    _savedData.Modified = true;
+                    if (!_savedData.ContainsKey(chunk))
+                    {
+                        _savedData.GeneratedStructures.Add(chunk, structure);
+                        _savedData.Modified = true;
+                    }
                 }
                 catch (Exception err)
                 {
