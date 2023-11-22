@@ -386,14 +386,13 @@ namespace UndergroundMines
 
         // CHOOSE RANDOM STRUCTURES
 
-        public static ESchematicType REndOrNull()
+        public static ESchematicType REndOrNull(Config config)
         {
-            return new Random().NextDouble() switch
-            {
-                <= 0.15 => ESchematicType.UndergroundEnd, // 15%
-                <= 1.0 => ESchematicType.Null, // 85%
-                _ => ESchematicType.Null
-            };
+            double random = new Random().NextDouble();
+
+            if (random <= config.newMineSpawnChance) return ESchematicType.UndergroundEnd;
+
+            return ESchematicType.Null;
         }
 
         /// <summary>Random structure among UndergroundAngle, UndergroundMine and UndergroundCross.</summary>

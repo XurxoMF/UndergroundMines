@@ -13,9 +13,24 @@ namespace UndergroundMines
         public bool aditionalOres = true;
 
         /// <summary>
+        /// Generate or not mushrooms in the mines.<br/>true = Generate mushrooms.<br/>false = Don't generate mushrooms.
+        /// </summary>
+        public bool addMushrooms = true;
+
+        /// <summary>
+        /// Generate or not locust nests in the mines.<br/>true = Generate locust nests.<br/>false = Don't generate locust nests.
+        /// </summary>
+        public bool addLocustNests = true;
+
+        /// <summary>
         /// How many entrances the mod will generate.<br/>0 = No entrances.<br/>1 = All the UndergroundCross with no water in the top layer will have entrance.
         /// </summary>
         public double entranceChance = ModStaticConfig.DefaultEntrances;
+
+        /// <summary>
+        /// How many new mines will be generated in chunks with no colindant mines.<br/>0 = 0 new mines.<br/>1 = Every chunk will have a mine XD
+        /// </summary>
+        public double newMineSpawnChance = ModStaticConfig.DeffaultNewMineSpawnChance;
 
         public Config()
         {

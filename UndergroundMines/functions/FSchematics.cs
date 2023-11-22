@@ -134,6 +134,16 @@ namespace UndergroundMines
                     }
                 }
 
+                if (!config.addMushrooms)
+                {
+                    if (asset.StartsWith("game:mushroom")) asset = "game:meta-filler";
+                }
+
+                if (!config.addLocustNests)
+                {
+                    if (asset.StartsWith("game:locustnest")) asset = "game:meta-filler";
+                }
+
                 AssetLocation newBlock = new(asset);
                 BlockCodes.Add(key, newBlock);
             }

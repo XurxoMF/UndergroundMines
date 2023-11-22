@@ -11,6 +11,7 @@ namespace UndergroundMines
     {
         public static double DefaultHeight = 0.48;
         public static double DefaultEntrances = 0.1;
+        public static double DeffaultNewMineSpawnChance = 0.15;
 
         /* ORE-QUALITY LIST
         > nativecopper -------- "poor-nativecopper", "medium-nativecopper", "rich-nativecopper", "bountiful-nativecopper",

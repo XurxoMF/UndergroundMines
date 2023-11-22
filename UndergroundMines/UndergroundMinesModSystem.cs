@@ -87,37 +87,8 @@ namespace UndergroundMines
                     generated = true;
                 }
                 else if (structuredExits.Count <= 0)
-                { // No structure with direct exit in colindant chunks.
-                    // 100% INFINITE
-                    /*
-                    if (exits.Count == 2)
-                    {
-                        if (!FAlgorithms.AreSidesOpposite(exits))
-                        { // exits in angle
-                            structure = FAlgorithms.GetStructureWithAdjustedRotation(ESchematicType.UndergroundAngle, exits);
-                            generated = true;
-                        }
-                    }
-                    else
-                    {
-                        var randomType = FAlgorithms.REndOrNull();
-
-                        if (randomType == ESchematicType.Null)
-                        {
-                            structure = null;
-                            generated = true;
-                        }
-                        else
-                        {
-                            structure = FAlgorithms.GetStructureWithAdjustedRotation(randomType, exits);
-                            generated = true;
-                        }
-                    }
-                    */
-                    // 100% INFINITE
-
-                    // NOT 100% INFINITE
-                    var randomType = FAlgorithms.REndOrNull();
+                {
+                    var randomType = FAlgorithms.REndOrNull(_config);
 
                     if (randomType == ESchematicType.Null)
                     {
