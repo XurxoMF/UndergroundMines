@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 
@@ -98,7 +99,7 @@ namespace UndergroundMines
 
             // north chunk
             // Get path for the north block at the top of the structure.
-            path = blockAccessor.GetBlock(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ - (chunkSize / 2)).Code.Path;
+            path = blockAccessor.GetBlock(new BlockPos(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ - (chunkSize / 2), Dimensions.NormalWorld)).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
                 newChunk = FChunk.GetChunk(config, chunkX, chunkZ - distance, chunkSize, seaLevel);
@@ -118,7 +119,7 @@ namespace UndergroundMines
 
             // east chunk
             // Get path for the east block at the top of the structure.
-            path = blockAccessor.GetBlock(actualChunk.BlockX + (chunkSize / 2) - 1, actualChunk.BlockY + 8, actualChunk.BlockZ).Code.Path;
+            path = blockAccessor.GetBlock(new BlockPos(actualChunk.BlockX + (chunkSize / 2) - 1, actualChunk.BlockY + 8, actualChunk.BlockZ, Dimensions.NormalWorld)).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
                 newChunk = FChunk.GetChunk(config, chunkX + distance, chunkZ, chunkSize, seaLevel);
@@ -138,7 +139,7 @@ namespace UndergroundMines
 
             // south chunk
             // Get path for the east block at the top of the structure.
-            path = blockAccessor.GetBlock(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ + (chunkSize / 2) - 1).Code.Path;
+            path = blockAccessor.GetBlock(new BlockPos(actualChunk.BlockX, actualChunk.BlockY + 8, actualChunk.BlockZ + (chunkSize / 2) - 1, Dimensions.NormalWorld)).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
                 newChunk = FChunk.GetChunk(config, chunkX, chunkZ + distance, chunkSize, seaLevel);
@@ -158,7 +159,7 @@ namespace UndergroundMines
 
             // west chunk
             // Get path for the north block at the top of the structure.
-            path = blockAccessor.GetBlock(actualChunk.BlockX - (chunkSize / 2), actualChunk.BlockY + 8, actualChunk.BlockZ).Code.Path;
+            path = blockAccessor.GetBlock(new BlockPos(actualChunk.BlockX - (chunkSize / 2), actualChunk.BlockY + 8, actualChunk.BlockZ, Dimensions.NormalWorld)).Code.Path;
             if (!path.StartsWith("saltwater") && !path.StartsWith("water"))
             {
                 newChunk = FChunk.GetChunk(config, chunkX - distance, chunkZ, chunkSize, seaLevel);
@@ -371,14 +372,14 @@ namespace UndergroundMines
         {
             List<int> levels = new()
             {
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z - 4)),
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X, pos.Y, pos.Z - 4)),
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z - 4)),
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z)),
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z + 5)),
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X, pos.Y, pos.Z + 5)),
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z + 5)),
-                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z))
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z - 4, Dimensions.NormalWorld)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X, pos.Y, pos.Z - 4, Dimensions.NormalWorld)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z - 4, Dimensions.NormalWorld)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z, Dimensions.NormalWorld)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X + 5, pos.Y, pos.Z + 5, Dimensions.NormalWorld)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X, pos.Y, pos.Z + 5, Dimensions.NormalWorld)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z + 5, Dimensions.NormalWorld)),
+                blockAccessor.GetTerrainMapheightAt(new BlockPos(pos.X - 4, pos.Y, pos.Z, Dimensions.NormalWorld))
             };
 
             return levels.Min();

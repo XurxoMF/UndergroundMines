@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 
@@ -19,7 +20,7 @@ namespace UndergroundMines
 
             for (int y = start; y >= 0 && rockType == ""; y--)
             {
-                var path = chunkData.GetLocalBlockAtBlockPos(world, new BlockPos(chunkSize / 2, y, chunkSize / 2)).Code.Path;
+                var path = chunkData.GetLocalBlockAtBlockPos(world, new BlockPos(chunkSize / 2, y, chunkSize / 2, Dimensions.NormalWorld)).Code.Path;
 
                 if (path.StartsWith("rock-"))
                 {

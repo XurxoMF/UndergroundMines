@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 
@@ -153,7 +154,7 @@ namespace UndergroundMines
             newSchematic.TransformWhilePacked(world, EnumOrigin.BottomCenter, (int)rotation);
             newSchematic.Init(blockAccessor);
             BlockPos pos = new(
-                chunk.BlockX, chunk.BlockY, chunk.BlockZ
+                chunk.BlockX, chunk.BlockY, chunk.BlockZ, Dimensions.NormalWorld
             );
             newSchematic.Place(blockAccessor, world, newSchematic.GetStartPos(pos, EnumOrigin.BottomCenter), EnumReplaceMode.ReplaceAllNoAir);
         }
@@ -172,7 +173,7 @@ namespace UndergroundMines
             // Entrances will always be in North rotation so we don't have to rotate it.
             newSchematic.Init(blockAccessor);
             BlockPos pos = new(
-                chunk.BlockX, chunk.BlockY, chunk.BlockZ
+                chunk.BlockX, chunk.BlockY, chunk.BlockZ, Dimensions.NormalWorld
             );
             newSchematic.Place(blockAccessor, world, newSchematic.GetStartPos(pos, EnumOrigin.BottomCenter), EnumReplaceMode.ReplaceAllNoAir);
         }

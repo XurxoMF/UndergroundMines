@@ -263,7 +263,7 @@ namespace UndergroundMines
             {
                 if (structure != null)
                 {
-                    var chunkHeight = FAlgorithms.GetEntranceY(_blockAccessor, new BlockPos(chunk.BlockX, chunk.BlockY, chunk.BlockZ), _seaLevel);
+                    var chunkHeight = FAlgorithms.GetEntranceY(_blockAccessor, new BlockPos(chunk.BlockX, chunk.BlockY, chunk.BlockZ, Dimensions.NormalWorld), _seaLevel);
 
                     // Change cross to entrance cross some times.
                     if (structure.Type == ESchematicType.UndergroundCross && chunkHeight >= _seaLevel)
