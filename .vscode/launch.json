@@ -23,7 +23,7 @@
                 "--addModPath",
                 "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
                 "--dataPath",
-                "C:/Users/xurxo/AppData/Roaming/VintagestoryData1.19pre"
+                "C:/Users/xurxo/AppData/Roaming/VintagestoryDataDev"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
@@ -45,7 +45,7 @@
                 "--addModPath",
                 "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
                 "--dataPath",
-                "C:/Users/xurxo/AppData/Roaming/VintagestoryData1.19pre"
+                "C:/Users/xurxo/AppData/Roaming/VintagestoryDataDev"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
