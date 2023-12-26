@@ -10,6 +10,6 @@
     "description": "Adds underground mines and mineshafts.",
     "version": "1.0.3",
     "dependencies": {
-        "game": "1.19.0-rc1"
+        "game": "1.19.0-rc.1"
     }
 }
