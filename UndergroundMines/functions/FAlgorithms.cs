@@ -4,8 +4,10 @@ using System.Linq;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using UndergroundMines.enums;
+using UndergroundMines.classes;
 
-namespace UndergroundMines
+namespace UndergroundMines.functions
 {
     public class FAlgorithms
     {

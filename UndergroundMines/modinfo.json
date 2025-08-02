@@ -8,8 +8,8 @@
         "Rata"
     ],
     "description": "Adds underground mines and mineshafts.",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "dependencies": {
-        "game": "1.20.0-rc.1"
+        "game": "1.21.0-rc.1"
     }
 }

@@ -4,8 +4,10 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using UndergroundMines.enums;
+using UndergroundMines.classes;
 
-namespace UndergroundMines
+namespace UndergroundMines.functions
 {
     public class FSchematics
     {
@@ -61,11 +63,11 @@ namespace UndergroundMines
                 if (schematic != null)
                 {
                     schematics.Add(schematic);
-                    api.Server.LogEvent($"[{ModInfo.MOD_NAME}] Loaded structure {fileName}");
+                    api.Server.LogEvent($"[{enums.ModInfo.MOD_NAME}] Loaded structure {fileName}");
                 }
                 else
                 {
-                    api.Server.LogError($"[{ModInfo.MOD_NAME}] Could not load the structure {fileName}");
+                    api.Server.LogError($"[{enums.ModInfo.MOD_NAME}] Could not load the structure {fileName}");
                 }
             }
 

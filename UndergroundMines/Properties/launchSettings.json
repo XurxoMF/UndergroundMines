@@ -2,15 +2,15 @@
     "profiles": {
         "Client": {
             "commandName": "Executable",
-            "executablePath": "$(VINTAGE_STORY)/Vintagestory.exe",
-            "commandLineArgs": "--tracelog --addModPath \"$(ProjectDir)/bin/$(Configuration)/Mods\"",
-            "workingDirectory": "$(VINTAGE_STORY)"
+            "executablePath": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Vintagestory",
+            "commandLineArgs": "--tracelog --dataPath=\"$(HOME)/.config/VSLInstallations/Modder\" --addModPath \"$(ProjectDir)/bin/$(Configuration)/Mods\"",
+            "workingDirectory": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2"
         },
         "Server": {
             "commandName": "Executable",
-            "executablePath": "$(VINTAGE_STORY)/VintagestoryServer.exe",
-            "commandLineArgs": "--tracelog --addModPath \"$(ProjectDir)/bin/$(Configuration)/Mods\"",
-            "workingDirectory": "$(VINTAGE_STORY)"
+            "executablePath": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryServer",
+            "commandLineArgs": "--tracelog --dataPath=\"$(HOME)/.config/VSLInstallations/Modder\" --addModPath \"$(ProjectDir)/bin/$(Configuration)/Mods\"",
+            "workingDirectory": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2"
         }
     }
 }

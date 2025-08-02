@@ -8,12 +8,12 @@
             "name": "Launch Client (Debug)",
             "type": "coreclr",
             "request": "launch",
-            "program": "${env:VINTAGE_STORY}/Vintagestory.exe",
+            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Vintagestory.exe",
             "linux": {
-                "program": "${env:VINTAGE_STORY}/Vintagestory"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Vintagestory"
             },
             "osx": {
-                "program": "${env:VINTAGE_STORY}/Vintagestory"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Vintagestory"
             },
             "preLaunchTask": "build",
             "args": [
@@ -23,7 +23,7 @@
                 "--addModPath",
                 "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
                 "--dataPath",
-                "C:/Users/xurxo/AppData/Roaming/VintagestoryDataDev"
+                "${env:HOME}/.config/VSLInstallations/Modder"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
@@ -32,12 +32,12 @@
             "name": "Launch Server",
             "type": "coreclr",
             "request": "launch",
-            "program": "${env:VINTAGE_STORY}/VintagestoryServer.exe",
+            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryServer.exe",
             "linux": {
-                "program": "${env:VINTAGE_STORY}/VintagestoryServer"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryServer"
             },
             "osx": {
-                "program": "${env:VINTAGE_STORY}/VintagestoryServer"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryServer"
             },
             "preLaunchTask": "build",
             "args": [
@@ -45,19 +45,19 @@
                 "--addModPath",
                 "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
                 "--dataPath",
-                "C:/Users/xurxo/AppData/Roaming/VintagestoryDataDev"
+                "${env:HOME}/.config/VSLInstallations/Modder"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
         },
         {
-            "name": "CakeBuild",
+            "name": "Build",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build (Cake)",
-            "program": "${workspaceFolder}/CakeBuild/bin/Debug/net7.0/CakeBuild.dll",
+            "program": "${workspaceFolder}/ZZCakeBuild/bin/Debug/net8.0/CakeBuild.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/CakeBuild",
+            "cwd": "${workspaceFolder}/ZZCakeBuild",
             "stopAtEntry": false,
             "console": "internalConsole"
         }

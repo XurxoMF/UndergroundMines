@@ -7,6 +7,9 @@ using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using UndergroundMines.enums;
+using UndergroundMines.functions;
+using UndergroundMines.classes;
 
 namespace UndergroundMines
 {
@@ -57,7 +60,7 @@ namespace UndergroundMines
             _api.Event.GameWorldSave += SaveData;
             _savedData = LoadData();
 
-            _api.Server.LogEvent($"[{ModInfo.MOD_NAME}] Ready! Loadding config...");
+            _api.Server.LogEvent($"[{enums.ModInfo.MOD_NAME}] Ready! Loadding config...");
         }
 
         private void OnChunkColumnGeneration(IChunkColumnGenerateRequest request)
@@ -343,11 +346,11 @@ namespace UndergroundMines
             // Try loading config.
             try
             {
-                _config = _api.LoadModConfig<Config>($"{ModInfo.MOD_NAME}.json");
+                _config = _api.LoadModConfig<Config>($"{enums.ModInfo.MOD_NAME}.json");
             }
             catch
             {
-                _api.Logger.Error($"[{ModInfo.MOD_NAME}] There is no config file or it contain errors! Applying default config!");
+                _api.Logger.Error($"[{enums.ModInfo.MOD_NAME}] There is no config file or it contain errors! Applying default config!");
             }
 
             // Value testing, in case some of them is invalid.
@@ -357,18 +360,18 @@ namespace UndergroundMines
 
             if (_config.yLevel > 1 || _config.yLevel < 0)
             {
-                _api.Logger.Error($"[{ModInfo.MOD_NAME}] yLevel has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultHeight})!");
+                _api.Logger.Error($"[{enums.ModInfo.MOD_NAME}] yLevel has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultHeight})!");
                 _config.yLevel = ModStaticConfig.DefaultHeight;
             }
 
             if (_config.entranceChance > 1 || _config.entranceChance < 0)
             {
-                _api.Logger.Error($"[{ModInfo.MOD_NAME}] entranceChance has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultEntrances})!");
+                _api.Logger.Error($"[{enums.ModInfo.MOD_NAME}] entranceChance has to be a number between 0 and 1! Changing to default ({ModStaticConfig.DefaultEntrances})!");
                 _config.entranceChance = ModStaticConfig.DefaultEntrances;
             }
 
-            _api.StoreModConfig(_config, $"{ModInfo.MOD_NAME}.json");
-            _api.Logger.Event($"[{ModInfo.MOD_NAME}] Config succesfully loaded.");
+            _api.StoreModConfig(_config, $"{enums.ModInfo.MOD_NAME}.json");
+            _api.Logger.Event($"[{enums.ModInfo.MOD_NAME}] Config succesfully loaded.");
         }
 
         // DATA MANAGING
@@ -376,7 +379,7 @@ namespace UndergroundMines
         {
             if (!_savedData.Modified) return;
 
-            var dungeonDataFile = Path.Combine(GamePaths.DataPath, "ModData", _api.WorldManager.SaveGame.SavegameIdentifier, $"{ModInfo.MOD_NAME}.bin");
+            var dungeonDataFile = Path.Combine(GamePaths.DataPath, "ModData", _api.WorldManager.SaveGame.SavegameIdentifier, $"{enums.ModInfo.MOD_NAME}.bin");
 
             var data = SerializerUtil.Serialize(_savedData);
 
@@ -396,7 +399,7 @@ namespace UndergroundMines
             }
             else
             {
-                var dataFile = Path.Combine(dataFolder, $"{ModInfo.MOD_NAME}.bin");
+                var dataFile = Path.Combine(dataFolder, $"{enums.ModInfo.MOD_NAME}.bin");
                 return File.Exists(dataFile)
                     ? SerializerUtil.Deserialize<SavedData>(File.ReadAllBytes(dataFile))
                     : new SavedData();
