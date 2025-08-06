@@ -13,7 +13,7 @@
   
   <ItemGroup>
     <Reference Include="VintagestoryAPI">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryAPI.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

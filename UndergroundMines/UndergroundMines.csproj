@@ -8,43 +8,43 @@
 
   <ItemGroup>
     <Reference Include="VintagestoryAPI">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryAPI.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryAPI.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Mods/VSSurvivalMod.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Mods/VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Mods/VSEssentials.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Mods/VSEssentials.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSCreativeMod">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Mods/VSCreativeMod.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Mods/VSCreativeMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Lib/Newtonsoft.Json.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Lib/Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="0Harmony">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Lib/0Harmony.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Lib/0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryLib">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryLib.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryLib.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="protobuf-net">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Lib/protobuf-net.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Lib/protobuf-net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="cairo-sharp">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Lib/cairo-sharp.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Lib/cairo-sharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Data.Sqlite">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Lib/Microsoft.Data.Sqlite.dll</HintPath>
+      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Lib/Microsoft.Data.Sqlite.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

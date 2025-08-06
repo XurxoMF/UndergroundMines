@@ -8,12 +8,12 @@
             "name": "Launch Client (Debug)",
             "type": "coreclr",
             "request": "launch",
-            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Vintagestory.exe",
+            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Vintagestory.exe",
             "linux": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Vintagestory"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Vintagestory"
             },
             "osx": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/Vintagestory"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Vintagestory"
             },
             "preLaunchTask": "build",
             "args": [
@@ -32,12 +32,12 @@
             "name": "Launch Server",
             "type": "coreclr",
             "request": "launch",
-            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryServer.exe",
+            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryServer.exe",
             "linux": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryServer"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryServer"
             },
             "osx": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.2/VintagestoryServer"
+                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryServer"
             },
             "preLaunchTask": "build",
             "args": [
