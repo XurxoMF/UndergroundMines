@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
   </PropertyGroup>
   
@@ -13,7 +13,7 @@
   
   <ItemGroup>
     <Reference Include="VintagestoryAPI">
-      <HintPath>/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryAPI.dll</HintPath>
+      <HintPath>/home/xurxomf/Xogos/Vintage_Story/Versions/1.22.0/VintagestoryAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

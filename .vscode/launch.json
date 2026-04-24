@@ -1,65 +1,65 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Launch Client (Debug)",
-            "type": "coreclr",
-            "request": "launch",
-            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Vintagestory.exe",
-            "linux": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Vintagestory"
-            },
-            "osx": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/Vintagestory"
-            },
-            "preLaunchTask": "build",
-            "args": [
-                // "--playStyle" , "preset-surviveandbuild",
-                // "--openWorld" , "modding test world",
-                "--tracelog",
-                "--addModPath",
-                "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
-                "--dataPath",
-                "${env:HOME}/.config/VSLInstallations/Modder"
-            ],
-            "console": "internalConsole",
-            "stopAtEntry": false
-        },
-        {
-            "name": "Launch Server",
-            "type": "coreclr",
-            "request": "launch",
-            "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryServer.exe",
-            "linux": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryServer"
-            },
-            "osx": {
-                "program": "/home/xurxomf/.config/VSLGameVersions/1.21.0-rc.3/VintagestoryServer"
-            },
-            "preLaunchTask": "build",
-            "args": [
-                "--tracelog",
-                "--addModPath",
-                "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
-                "--dataPath",
-                "${env:HOME}/.config/VSLInstallations/Modder"
-            ],
-            "console": "internalConsole",
-            "stopAtEntry": false
-        },
-        {
-            "name": "Build",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build (Cake)",
-            "program": "${workspaceFolder}/ZZCakeBuild/bin/Debug/net8.0/CakeBuild.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/ZZCakeBuild",
-            "stopAtEntry": false,
-            "console": "internalConsole"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Client (Debug)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "/home/xurxomf/Xogos/Vintage_Story/Versions/1.22.0/Vintagestory.exe",
+      "linux": {
+        "program": "/home/xurxomf/Xogos/Vintage_Story/Versions/1.22.0/Vintagestory"
+      },
+      "osx": {
+        "program": "/home/xurxomf/Xogos/Vintage_Story/Versions/1.22.0/Vintagestory"
+      },
+      "preLaunchTask": "build",
+      "args": [
+        // "--playStyle" , "preset-surviveandbuild",
+        // "--openWorld" , "modding test world",
+        "--tracelog",
+        "--addModPath",
+        "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
+        "--dataPath",
+        "/home/xurxomf/Xogos/Vintage_Story/Installations/Modder"
+      ],
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Launch Server",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "/home/xurxomf/Xogos/Vintage_Story/Versions/1.22.0/VintagestoryServer.exe",
+      "linux": {
+        "program": "/home/xurxomf/Xogos/Vintage_Story/Versions/1.22.0/VintagestoryServer"
+      },
+      "osx": {
+        "program": "/home/xurxomf/Xogos/Vintage_Story/Versions/1.22.0/VintagestoryServer"
+      },
+      "preLaunchTask": "build",
+      "args": [
+        "--tracelog",
+        "--addModPath",
+        "${workspaceFolder}/UndergroundMines/bin/Debug/Mods",
+        "--dataPath",
+        "/home/xurxomf/Xogos/Vintage_Story/Installations/Modder"
+      ],
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Build",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build (Cake)",
+      "program": "${workspaceFolder}/ZZCakeBuild/bin/Debug/net10.0/CakeBuild.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/ZZCakeBuild",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    }
+  ]
 }
